@@ -32,7 +32,7 @@ public class UserAPI {
      * @return 注册结果
      */
     @PostMapping("/login")
-    public Result loginOrRegister(@Valid User user, BindingResult errors, HttpServletRequest request) {
+    public Result loginOrRegister( @Valid User user, BindingResult errors, HttpServletRequest request) {
         Result result;
         if (errors.hasErrors()) {
             result = new Result<>();
@@ -40,9 +40,8 @@ public class UserAPI {
             return result;
         }
         result = userService.loginOrRegister(user);
-        if (result.isSuccess()) {
-            request.getSession().setAttribute(SESSION_NAME, result.getDate());
-        }
+        System.out.println(result.getDate().toString());
+        System.out.println(result.toString());
         return result;
     }
 
@@ -104,7 +103,7 @@ public class UserAPI {
     }
 
     @PostMapping("/student/update")
-    public Result<Student> updateStudent(Student student) {
+    public Result<Student> updateStudent(@RequestBody Student student) {
         return userService.updateStudent(student);
     }
 

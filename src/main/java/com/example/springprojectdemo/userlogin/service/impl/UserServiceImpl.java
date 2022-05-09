@@ -38,14 +38,16 @@ public class UserServiceImpl<T> implements UserService {
         Result result = new Result<>();
         User getUser = userDao.getByUserName(user.getUsername());
         if (getUser != null) {
-            result.setResultFailed("该用户名已经存在!");
-            return result;
+            if (!getUser.getPassword().equals(DigestUtils.md5Hex(user.getPassword()))) {
+                result.setResultFailed("密码错误");
+                return result;
+            }
+        } else {
+            user.setPassword(DigestUtils.md5Hex(user.getPassword()));
+            userDao.add(user);
         }
-        user.setPassword(DigestUtils.md5Hex(user.getPassword()));
-        userDao.add(user);
 
-        String token = TokenUtils.token(user.getUsername(), user.getPassword());
-        result.setToken(token);
+
         if (user.getRole() == 0) {
             Teacher teacher = null;
             try {
@@ -54,7 +56,7 @@ public class UserServiceImpl<T> implements UserService {
                 e.printStackTrace();
             }
             result.setResultSuccess(
-                    "register success",
+                    "login success",
                     teacher
             );
         } else {
@@ -67,11 +69,14 @@ public class UserServiceImpl<T> implements UserService {
             }
 
             result.setResultSuccess(
-                    "register success",
+                    "login success",
                     student
             );
 
         }
+        String token = TokenUtils.token(user.getUsername(), user.getPassword());
+        result.setToken(token);
+
         return result;
     }
 

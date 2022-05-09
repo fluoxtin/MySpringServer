@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 public interface UserService {
 
-    Result<User> loginOrRegister(User user);
+    Result loginOrRegister(User user);
 
     Result<Student> updateStudent(Student student);
 

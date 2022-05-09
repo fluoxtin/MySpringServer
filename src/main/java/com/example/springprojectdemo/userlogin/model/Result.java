@@ -1,5 +1,7 @@
 package com.example.springprojectdemo.userlogin.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.sun.xml.internal.ws.developer.Serialization;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,5 +41,15 @@ public class Result<T> implements Serializable {
         this.message = msg;
         this.success = false;
         this.date = null;
+    }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "message='" + message + '\'' +
+                ", success=" + success +
+                ", token='" + token + '\'' +
+                ", date=" + date +
+                '}';
     }
 }
