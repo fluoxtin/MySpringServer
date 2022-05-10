@@ -1,4 +1,4 @@
-package com.example.springprojectdemo.userlogin.dataobject;
+package com.example.springprojectdemo.dataobject;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

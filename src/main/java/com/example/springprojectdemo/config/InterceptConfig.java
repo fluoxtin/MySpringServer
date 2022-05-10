@@ -1,4 +1,4 @@
-package com.example.springprojectdemo.userlogin.config;
+package com.example.springprojectdemo.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -9,6 +9,7 @@ public class InterceptConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new UserInterceptor())
-                .excludePathPatterns("/login");
+                .excludePathPatterns("/api/student/login")
+                .excludePathPatterns("/api/teacher/login");
     }
 }

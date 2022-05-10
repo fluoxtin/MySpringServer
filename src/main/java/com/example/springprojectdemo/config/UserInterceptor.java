@@ -1,8 +1,10 @@
-package com.example.springprojectdemo.userlogin.config;
+package com.example.springprojectdemo.config;
 
-import com.example.springprojectdemo.userlogin.service.UserService;
+import com.example.springprojectdemo.model.Result;
+import com.example.springprojectdemo.model.ResultCode;
 import com.example.springprojectdemo.util.TokenUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -10,24 +12,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class UserInterceptor implements HandlerInterceptor {
-    @Autowired
-    private UserService userService;
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // 同样在这里调用用户服务传入session，判断用户是否登录或者有效
-        // 未登录则重定向至主页
-//        if (!userService.isLogin(request.getSession()).isSuccess()) {
-//            response.sendRedirect("/");
-//            return false;
-//        }
-//        return true;
+
         String token = request.getHeader("token");
         if (TokenUtils.verify(token)) {
             System.out.println("true");
+            response.addHeader("Access-Control-Expose-headers", "token");
+            response.addHeader("token", TokenUtils.getRefreshToken(token));
             return true;
         } else {
             System.out.println("false");
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setContentType("application/json; charset=utf-8");
+            response.getWriter().write(new ObjectMapper().writeValueAsString(
+                    new Result<>(ResultCode.INVALIDATE_TOKEN)
+            ));
             return false;
         }
     }

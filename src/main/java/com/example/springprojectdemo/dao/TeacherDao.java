@@ -1,8 +1,6 @@
-package com.example.springprojectdemo.userlogin.dao;
+package com.example.springprojectdemo.dao;
 
-import com.example.springprojectdemo.userlogin.dataobject.Student;
-import com.example.springprojectdemo.userlogin.dataobject.Teacher;
-import lombok.Setter;
+import com.example.springprojectdemo.dataobject.Teacher;
 import org.apache.ibatis.annotations.*;
 
 @Mapper

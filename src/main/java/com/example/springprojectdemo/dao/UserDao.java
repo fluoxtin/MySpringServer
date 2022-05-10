@@ -1,6 +1,6 @@
-package com.example.springprojectdemo.userlogin.dao;
+package com.example.springprojectdemo.dao;
 
-import com.example.springprojectdemo.userlogin.dataobject.User;
+import com.example.springprojectdemo.dataobject.User;
 import org.apache.ibatis.annotations.*;
 
 /**
@@ -15,12 +15,6 @@ public interface UserDao {
     @Update("update user set password = #{password} where id = #{id}")
     int update(User user);
 
-    @Select("select * from user where id = #{id}")
-    @Results({
-            @Result(property = "username", column = "username"),
-            @Result(property = "password", column = "password")
-    })
-    User getById(Integer id);
 
     @Select("select * from user where username = #{username}")
     @Results({

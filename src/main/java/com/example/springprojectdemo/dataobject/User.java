@@ -1,4 +1,4 @@
-package com.example.springprojectdemo.userlogin.dataobject;
+package com.example.springprojectdemo.dataobject;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

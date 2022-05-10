@@ -1,9 +1,7 @@
-package com.example.springprojectdemo.userlogin.dao;
+package com.example.springprojectdemo.dao;
 
-import com.example.springprojectdemo.userlogin.dataobject.Student;
+import com.example.springprojectdemo.dataobject.Student;
 import org.apache.ibatis.annotations.*;
-
-import java.util.List;
 
 @Mapper
 public interface StudentDao {

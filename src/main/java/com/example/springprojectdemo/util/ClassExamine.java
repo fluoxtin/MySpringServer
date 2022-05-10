@@ -1,4 +1,4 @@
-package com.example.springprojectdemo.userlogin.util;
+package com.example.springprojectdemo.util;
 
 import com.mysql.cj.util.StringUtils;
 
