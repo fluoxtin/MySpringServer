@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
@@ -21,7 +20,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api")
 public class UserAPI {
-    private static final String SESSION_NAME = "userInfo";
 
     @Resource
     private UserService userService;
@@ -36,8 +34,6 @@ public class UserAPI {
         Result<Student> result;
 
         result = userService.loginOrRegisterForS(user);
-        System.out.println(result.getData().toString());
-        System.out.println(result.toString());
 
         return result;
     }
@@ -47,8 +43,7 @@ public class UserAPI {
         Result<Teacher> result;
 
         result = userService.loginOrRegisterForT(user);
-        System.out.println(result.getData().toString());
-        System.out.println(result.toString());
+
         return result;
     }
 
@@ -61,7 +56,7 @@ public class UserAPI {
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/update/user")
     public Result<User> update(User user, HttpServletRequest request) throws Exception {
-        Result<User> result = new Result<>();
+        Result<User> result;
 
         result = userService.update(user);
 
@@ -80,4 +75,3 @@ public class UserAPI {
 
 }
 
-// eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6IjI1ZDU1YWQyODNhYTQwMGFmNDY0Yzc2ZDcxM2MwN2FkIiwidXNlcm5hbWUiOiIxMDExMjM0NTYzIn0.H_0zPNwCYo3m8cXVpwaVGeZYcPeXL4CHcOI9athkzaU

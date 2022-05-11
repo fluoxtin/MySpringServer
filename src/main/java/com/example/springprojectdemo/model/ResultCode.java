@@ -20,6 +20,8 @@ public enum ResultCode {
     private String msg;
 
     ResultCode(int status, String msg) {
+        this.code = status;
+        this.msg = msg;
     }
 
 }

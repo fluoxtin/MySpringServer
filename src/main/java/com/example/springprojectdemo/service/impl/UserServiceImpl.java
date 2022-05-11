@@ -10,13 +10,11 @@ import com.example.springprojectdemo.model.Result;
 import com.example.springprojectdemo.model.ResultCode;
 import com.example.springprojectdemo.service.UserService;
 import com.example.springprojectdemo.util.ClassExamine;
-import com.example.springprojectdemo.util.TokenUtils;
 import com.mysql.cj.util.StringUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 
 /**
  * @author fluoxtin created on 2022/4/9
@@ -47,13 +45,9 @@ public class UserServiceImpl implements UserService {
             userDao.add(user);
         }
 
-        Student student = null;
-        try {
-             student = studentDao.getStudentById(user.getUsername());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Student student = studentDao.getStudentById(user.getUsername());
 
+        result = Result.success(student);
 
         return result;
     }
@@ -71,29 +65,25 @@ public class UserServiceImpl implements UserService {
             user.setPassword(DigestUtils.md5Hex(user.getPassword()));
             userDao.add(user);
         }
-        Teacher teacher = null;
-        try {
-            teacher = teacherDao.getTeacherById(user.getUsername());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        result.success(teacher);
+        Teacher teacher = teacherDao.getTeacherById(user.getUsername());
+
+        result = Result.success(teacher);
         return result;
     }
 
     @Override
     public Result<Student> updateStudent(Student student) {
-        Result<Student> result = new Result<>();
+        Result<Student> result;
         studentDao.addStudent(student);
-        result.success(studentDao.getStudentById(student.getStu_id()));
+        result = Result.success(studentDao.getStudentById(student.getStu_id()));
         return result;
     }
 
     @Override
     public Result<Teacher> updateTeacher(Teacher teacher) {
-        Result<Teacher> result = new Result<>();
+        Result<Teacher> result;
         teacherDao.addTeacher(teacher);
-        result.success(teacherDao.getTeacherById(teacher.getTea_id()));
+        result = Result.success(teacherDao.getTeacherById(teacher.getTea_id()));
         return result;
     }
 
@@ -111,7 +101,7 @@ public class UserServiceImpl implements UserService {
         // 对象互补 检测字段为空则用数据库对应对象相应字段补上
         ClassExamine.objectOverlap(user, getUser);
         userDao.update(user);
-        result.success(user);
+        result = Result.success(user);
         return result;
     }
 

@@ -54,11 +54,11 @@ public class Result<T> implements Serializable {
         this.msg = resultCode.getMsg();
     }
 
-    public Result<T> success() {
+    public static <T> Result<T> success() {
         return new Result<>(ResultCode.SUCCESS);
     }
 
-    public Result<T> success(T data) {
+    public static <T> Result<T> success(T data) {
         return new Result<>(ResultCode.SUCCESS, data);
     }
 
