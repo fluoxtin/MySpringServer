@@ -5,7 +5,7 @@ import com.example.springprojectdemo.dataobject.Teacher;
 import com.example.springprojectdemo.dataobject.User;
 import com.example.springprojectdemo.model.Result;
 import com.example.springprojectdemo.service.UserService;
-import org.springframework.validation.BindingResult;
+import com.example.springprojectdemo.util.TokenUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,16 +34,23 @@ public class UserAPI {
         Result<Student> result;
 
         result = userService.loginOrRegisterForS(user);
+        if (result.getCode() == 200) {
+            response.addHeader("Access-Control-Expose-headers", "token");
+            response.addHeader("token", TokenUtils.create(user.getUsername(), user.getPassword()));
+        }
 
         return result;
     }
 
     @PostMapping("/teacher/login")
-    public Result<Teacher> loginOrRegisterForT(@RequestBody @Valid User user, BindingResult errors) {
+    public Result<Teacher> loginOrRegisterForT(@RequestBody @Valid User user, HttpServletResponse response) {
         Result<Teacher> result;
 
         result = userService.loginOrRegisterForT(user);
-
+        if (result.getCode() == 200) {
+            response.addHeader("Access-Control-Expose-headers", "token");
+            response.addHeader("token", TokenUtils.create(user.getUsername(), user.getPassword()));
+        }
         return result;
     }
 
@@ -71,6 +78,12 @@ public class UserAPI {
     @PostMapping("/teacher/update")
     public Result<Teacher> updateTeacher(Teacher teacher) {
         return userService.updateTeacher(teacher);
+    }
+
+    @PostMapping("/islogin")
+    public Result login() {
+
+        return new Result<>(200, "Validate token");
     }
 
 }

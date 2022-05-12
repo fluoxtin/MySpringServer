@@ -9,7 +9,7 @@ public class InterceptConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new UserInterceptor())
-                .excludePathPatterns("/api/student/login")
-                .excludePathPatterns("/api/teacher/login");
+                .excludePathPatterns("/student/login")
+                .excludePathPatterns("/teacher/login");
     }
 }
