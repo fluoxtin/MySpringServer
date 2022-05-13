@@ -86,4 +86,12 @@ public class TokenUtils {
                 .sign(algorithm);
         return token;
     }
+
+    public static String getUsernameFromToken(String token) {
+        return JWT.require(Algorithm.HMAC256(TOKEN_SECRET))
+                .build()
+                .verify(token)
+                .getClaim("username")
+                .asString();
+    }
 }

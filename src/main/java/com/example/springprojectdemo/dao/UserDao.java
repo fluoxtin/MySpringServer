@@ -19,7 +19,8 @@ public interface UserDao {
     @Select("select * from user where username = #{username}")
     @Results({
             @Result(property = "username", column = "username"),
-            @Result(property = "password", column = "password")
+            @Result(property = "password", column = "password"),
+            @Result(property = "role", column = "role")
     })
     User getByUserName(String username);
 

@@ -7,7 +7,6 @@ import com.example.springprojectdemo.model.Result;
 import com.example.springprojectdemo.service.UserService;
 import com.example.springprojectdemo.util.TokenUtils;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,12 +56,11 @@ public class UserAPI {
     /**
      *
      * @param user 修改后用户名对象
-     * @param request 请求对象 用于操作 session
      * @return 修改对象
      * @throws Exception
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/update/user")
-    public Result<User> update(User user, HttpServletRequest request) throws Exception {
+    public Result<User> update(User user) throws Exception {
         Result<User> result;
 
         result = userService.update(user);
@@ -76,14 +74,18 @@ public class UserAPI {
     }
 
     @PostMapping("/teacher/update")
-    public Result<Teacher> updateTeacher(Teacher teacher) {
+    public Result<Teacher> updateTeacher(@RequestBody Teacher teacher) {
         return userService.updateTeacher(teacher);
     }
 
     @PostMapping("/islogin")
-    public Result login() {
+    public Result<User> login(HttpServletRequest request) {
 
-        return new Result<>(200, "Validate token");
+        String token = request.getHeader("token");
+        String id = TokenUtils.getUsernameFromToken(token);
+
+
+        return userService.getUserById(id);
     }
 
 }

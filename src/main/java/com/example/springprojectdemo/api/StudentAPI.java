@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
@@ -46,22 +47,33 @@ public class StudentAPI {
     }
 
     @PostMapping("/getcourses")
-    public Result<List<Course>> getCourses(String stu_id){
+    public Result<List<Course>> getCourses(HttpServletRequest request){
+        String stu_id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
         return studentService.getCourse(stu_id);
     }
 
-    @PostMapping("/getRecord")
-    public Result<List<AttendanceRecord>> getRecord(String stu_id) {
+    @PostMapping("/getrecord")
+    public Result<List<AttendanceRecord>> getRecord(HttpServletRequest request) {
+        String stu_id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
+
         return studentService.getAttendanceRecord(stu_id);
     }
 
     @PostMapping("/gettask")
-    public Result<AttendTask> getTask(String stu_id) {
+    public Result<AttendTask> getTask(HttpServletRequest request) {
+        String stu_id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
+
         return studentService.getAttendTask(stu_id);
     }
 
-    @PostMapping("/getInfo")
-    public Result<Student> getInfo(String stu_id) {
+    @PostMapping("/getinfo")
+    public Result<Student> getInfo(HttpServletRequest request) {
+
+        String stu_id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
+
+        if (stu_id!= null)
+            System.out.println(stu_id);
+        else System.out.println("id == null");
         return studentService.getInfoById(stu_id);
     }
 

@@ -23,4 +23,6 @@ public interface UserService {
 
     Result<User> update(User user) throws Exception;
 
+    Result<User> getUserById(String id);
+
 }
