@@ -9,6 +9,8 @@ public class Course {
 
     private String cour_name;
 
+    private String tea_name;
+
     private String class_time;
 
 }

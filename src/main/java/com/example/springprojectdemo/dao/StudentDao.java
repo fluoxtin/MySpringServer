@@ -30,25 +30,27 @@ public interface StudentDao {
     int addStudent(Student student);
 
     @Select({"select",
-            " c.cour_id, c.cour_name, c.class_time ",
-            "from course c ",
-            "where cour_id in ",
+            " c.cour_id, c.cour_name, c.class_time, t.tea_name ",
+            "from course c, teacher t ",
+            "where c.tea_id = t.tea_id and c.cour_id in ",
             "(select cour_id from student_course where stu_id = #{stu_id})"})
     @Results({
             @Result(property = "cour_id", column = "cour_id"),
             @Result(property = "cour_name", column = "cour_name"),
-            @Result(property = "class_time", column = "class_time")
+            @Result(property = "class_time", column = "class_time"),
+            @Result(property = "tea_name", column = "tea_name")
     })
     List<Course> getCourses(String stu_id);
 
-    @Select("select ca.attend_id, c.cour_name, c.class_time, sa.attendance\n" +
-            "from student_attend sa, course_attendance ca, course c where c.cour_id = ca.cour_id and attend_id\n" +
+    @Select("select ca.attend_id, c.cour_name, sa.attendance,t.tea_name, sa.sign_in_time\n" +
+            "from student_attend sa, course_attendance ca, course c, teacher t where c.cour_id = ca.cour_id and attend_id\n" +
             " in (select attend_id from course_attendance where stu_id = #{stu_id}')")
     @Results({
             @Result(property = "attend_id", column = "attend_id"),
             @Result(property = "cour_name", column = "cour_name"),
             @Result(property = "attendance", column = "attendance"),
-            @Result(property = "sign_in_time", column = "sign_in_time")
+            @Result(property = "sign_in_time", column = "sign_in_time"),
+            @Result(property = "tea_name", column = "tea_name"),
     })
     List<AttendanceRecord> getAttendanceRecord(String stu_id);
 

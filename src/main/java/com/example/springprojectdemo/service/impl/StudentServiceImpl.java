@@ -67,4 +67,12 @@ public class StudentServiceImpl implements StudentService {
         studentDao.deleteTask(stu_id);
         return Result.success(task);
     }
+
+    @Override
+    public Result<Student> getInfoById(String stu_id) {
+        Student student = studentDao.getStudentById(stu_id);
+        if (student != null) {
+            return Result.success(student);
+        } else return Result.failed();
+    }
 }

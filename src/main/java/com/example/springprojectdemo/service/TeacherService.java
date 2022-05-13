@@ -20,4 +20,6 @@ public interface TeacherService {
     Result<List<AttendTask>> getAttendTaskRecord(String tea_id);
 
     Result postTask(AttendTask task);
+
+    Result<Teacher> getTeacherById(String tea_id);
 }

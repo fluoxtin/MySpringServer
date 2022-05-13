@@ -27,11 +27,12 @@ public interface TeacherDao {
             "values (#{tea_id}, #{name}, #{sex}, #{phone}, #{email}, #{unit})")
     int addTeacher(Teacher teacher);
 
-    @Select("select * from course where tea_id = #{id}")
+    @Select("select c.cour_id, c.cour_name, c.class_time, t.tea_name from course c, teacher t where tea_id = #{id}")
     @Results({
             @Result(property = "cour_id", column = "cour_id"),
             @Result(property = "cour_name", column = "cour_name"),
-            @Result(property = "class_time", column = "class_time")
+            @Result(property = "class_time", column = "class_time"),
+            @Result(property = "tea_name", column = "tea_name")
     })
     List<Course> getCourses(String id);
 

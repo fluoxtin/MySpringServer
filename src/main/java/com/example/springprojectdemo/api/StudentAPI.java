@@ -55,9 +55,14 @@ public class StudentAPI {
         return studentService.getAttendanceRecord(stu_id);
     }
 
-    @PostMapping("/task")
+    @PostMapping("/gettask")
     public Result<AttendTask> getTask(String stu_id) {
         return studentService.getAttendTask(stu_id);
+    }
+
+    @PostMapping("/getInfo")
+    public Result<Student> getInfo(String stu_id) {
+        return studentService.getInfoById(stu_id);
     }
 
 }

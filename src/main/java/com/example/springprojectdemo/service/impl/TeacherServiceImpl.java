@@ -27,9 +27,6 @@ public class TeacherServiceImpl implements TeacherService {
     TeacherDao teacherDao;
 
     @Resource
-    StudentDao studentDao;
-
-    @Resource
     SqlSessionFactory sqlSessionFactory;
 
     @Override
@@ -93,5 +90,10 @@ public class TeacherServiceImpl implements TeacherService {
         session.commit();
 
         return Result.success();
+    }
+
+    @Override
+    public Result<Teacher> getTeacherById(String tea_id) {
+        return Result.success(teacherDao.getTeacherById(tea_id));
     }
 }

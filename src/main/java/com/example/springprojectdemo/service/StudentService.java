@@ -17,4 +17,6 @@ public interface StudentService {
 
     Result<AttendTask> getAttendTask(String stu_id);
 
+    Result<Student> getInfoById(String stu_id);
+
 }

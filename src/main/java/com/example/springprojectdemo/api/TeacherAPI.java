@@ -41,7 +41,7 @@ public class TeacherAPI {
         return teacherService.updateTeacher(teacher);
     }
 
-    @PostMapping("/courses")
+    @PostMapping("/getcourses")
     public Result<List<Course>> getCourses(String tea_id) {
         return teacherService.getCourse(tea_id);
     }
@@ -51,6 +51,12 @@ public class TeacherAPI {
 
         return teacherService.postTask(task);
 
+    }
+
+    @PostMapping("/getInfo")
+    public Result<Teacher> getInfo(String tea_id) {
+
+        return teacherService.getTeacherById(tea_id);
     }
 
 }

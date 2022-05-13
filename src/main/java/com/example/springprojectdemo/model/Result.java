@@ -62,4 +62,8 @@ public class Result<T> implements Serializable {
         return new Result<>(ResultCode.SUCCESS, data);
     }
 
+    public static<T> Result<T> failed() {
+        return new Result<>(ResultCode.FAILED);
+    }
+
 }
