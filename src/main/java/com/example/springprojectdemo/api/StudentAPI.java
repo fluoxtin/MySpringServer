@@ -76,5 +76,11 @@ public class StudentAPI {
         else System.out.println("id == null");
         return studentService.getInfoById(stu_id);
     }
+    
+    public Result postLeaveRequest(HttpServletRequest request) {
+        String stu_id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
+        // TODO: 2022/5/17  
+        return null;
+    }
 
 }

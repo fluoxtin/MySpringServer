@@ -1,12 +1,10 @@
 package com.example.springprojectdemo.service.impl;
 
-import com.example.springprojectdemo.dao.StudentDao;
 import com.example.springprojectdemo.dao.TeacherDao;
 import com.example.springprojectdemo.dao.UserDao;
 import com.example.springprojectdemo.dataobject.*;
 import com.example.springprojectdemo.model.Result;
 import com.example.springprojectdemo.model.ResultCode;
-import com.example.springprojectdemo.service.StudentService;
 import com.example.springprojectdemo.service.TeacherService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.ibatis.session.ExecutorType;
@@ -50,10 +48,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Result<Teacher> updateTeacher(Teacher teacher) {
-        Result<Teacher> result;
         teacherDao.addTeacher(teacher);
-        result = Result.success(teacherDao.getTeacherById(teacher.getTea_id()));
-        return result;
+        return Result.success(teacherDao.getTeacherById(teacher.getTea_id()));
     }
 
     @Override
@@ -70,9 +66,9 @@ public class TeacherServiceImpl implements TeacherService {
      * @return list of attendance task
      */
     @Override
-    public Result<List<AttendTask>> getAttendTaskRecord(String tea_id) {
-        teacherDao.getCourseAttendRecord(tea_id);
-        return null;
+    public Result<List<CourseAttendRecord>> getRecord(String tea_id) {
+
+        return Result.success(teacherDao.getCourseAttendRecord(tea_id));
     }
 
     @Override
@@ -83,7 +79,13 @@ public class TeacherServiceImpl implements TeacherService {
         List<String> stuIds = td.getStuIds(task.getCour_id());
         StudentTask studentTask;
         for (String id : stuIds) {
-            studentTask = new StudentTask(task.getAttend_id(), id, task.getDead_time());
+            studentTask = new StudentTask(
+                    task.getAttend_id(),
+                    id,
+                    task.getDeadline(),
+                    task.getLocation().getLatitude(),
+                    task.getLocation().getLongitude()
+            );
 //            td.addTask(task, id);
             td.addTask(studentTask);
         }

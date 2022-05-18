@@ -1,12 +1,10 @@
 package com.example.springprojectdemo.api;
 
-import com.example.springprojectdemo.dataobject.AttendTask;
-import com.example.springprojectdemo.dataobject.Course;
-import com.example.springprojectdemo.dataobject.Teacher;
-import com.example.springprojectdemo.dataobject.User;
+import com.example.springprojectdemo.dataobject.*;
 import com.example.springprojectdemo.model.Result;
 import com.example.springprojectdemo.service.TeacherService;
 import com.example.springprojectdemo.util.TokenUtils;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +48,7 @@ public class TeacherAPI {
 
     @PostMapping("/posttask")
     public Result postAttendanceTask(@RequestBody AttendTask task) {
+        System.out.println("deadline : " + task.getDeadline());
         return teacherService.postTask(task);
     }
 
@@ -57,6 +56,12 @@ public class TeacherAPI {
     public Result<Teacher> getInfo(HttpServletRequest request) {
         String tea_id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
         return teacherService.getTeacherById(tea_id);
+    }
+
+    @PostMapping("/getrecord")
+    public Result<List<CourseAttendRecord>> getCourRecord(HttpServletRequest request) {
+        String tea_id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
+        return teacherService.getRecord(tea_id);
     }
 
 }

@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class Teacher implements Serializable {
     private String tea_id;
 
-    private String name;
+    private String tea_name;
 
     private String sex;
 
