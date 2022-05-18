@@ -2,8 +2,6 @@ package com.example.springprojectdemo.dataobject;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class CourseAttendRecord {
 
@@ -15,23 +13,23 @@ public class CourseAttendRecord {
 
     private long time;
 
-    private int total_student;
+    private int total;
 
-    private int actual_attendance;
+    private int actual;
 
     public CourseAttendRecord(
             String tea_id,
             String attend_id,
             String cour_name,
             long time,
-            int total_student,
-            int actual_attendance
+            int total,
+            int actual
     ) {
         this.tea_id = tea_id;
         this.attend_id = attend_id;
         this.cour_name = cour_name;
         this.time = time;
-        this.total_student = total_student;
-        this.actual_attendance = actual_attendance;
+        this.total = total;
+        this.actual = actual;
     }
 }
