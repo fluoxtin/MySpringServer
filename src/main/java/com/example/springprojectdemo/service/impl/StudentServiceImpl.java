@@ -63,9 +63,16 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Result<AttendTask> getAttendTask(String stu_id) {
-        AttendTask task = studentDao.getTask(stu_id);
+        StudentTask task = studentDao.getTask(stu_id);
+        String cour_id = studentDao.getCourIdFromCR(task.getAttend_id());
+        AttendTask attendTask = new AttendTask(
+                task.getAttend_id(),
+                cour_id,
+                task.getDeadline(),
+                new Location(task.getLatitude(), task.getLongitude())
+        );
         studentDao.deleteTask(stu_id);
-        return Result.success(task);
+        return Result.success(attendTask);
     }
 
     @Override

@@ -56,4 +56,8 @@ public interface TeacherDao {
     })
     List<CourseAttendRecord> getCourseAttendRecord(String tea_id);
 
+    @Insert("insert into course_attendance (attend_id, cour_id, tea_id, total_student, actual_attendance, time) " +
+            "values (#{attend_id}, #{cour_name}, #{tea_id}, #{total_student), #{actual_attendance}, #{time}")
+    int addCourseRecord(CourseAttendRecord record);
+
 }

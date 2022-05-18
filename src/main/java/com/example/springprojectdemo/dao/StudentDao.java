@@ -1,9 +1,6 @@
 package com.example.springprojectdemo.dao;
 
-import com.example.springprojectdemo.dataobject.AttendTask;
-import com.example.springprojectdemo.dataobject.AttendanceRecord;
-import com.example.springprojectdemo.dataobject.Course;
-import com.example.springprojectdemo.dataobject.Student;
+import com.example.springprojectdemo.dataobject.*;
 import com.mysql.cj.protocol.x.XProtocolRow;
 import org.apache.ibatis.annotations.*;
 
@@ -54,14 +51,13 @@ public interface StudentDao {
     })
     List<AttendanceRecord> getAttendanceRecord(String stu_id);
 
-    @Select("select attend_id, dead_time from attend_task where stu_id = #{stu_id}")
-    @Results({
-            @Result(property = "attend_id", column = "attend_id"),
-            @Result(property = "dead_time", column = "dead_time")
-    })
-    AttendTask getTask(String stu_id);
+    @Select("select * from attend_task where stu_id = #{stu_id}")
+    StudentTask getTask(String stu_id);
 
     @Delete("delete from attend_task where stu_id = #{stu_id}")
     void deleteTask(String stu_id);
+
+    @Select("select cour_id from course_attendance where attend_id = #{attend_id}")
+    String getCourIdFromCR(String attend_id);
 
 }

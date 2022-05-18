@@ -72,7 +72,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Result postTask(AttendTask task) {
+    public Result postTask(AttendTask task, String tea_id) {
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH);
         TeacherDao td = session.getMapper(TeacherDao.class);
@@ -89,6 +89,15 @@ public class TeacherServiceImpl implements TeacherService {
 //            td.addTask(task, id);
             td.addTask(studentTask);
         }
+        CourseAttendRecord record = new CourseAttendRecord(
+                tea_id,
+                task.getAttend_id(),
+                task.getCour_id(),
+                task.getDeadline() - (8 * 60 * 1000),
+                stuIds.size(),
+                0
+        );
+        td.addCourseRecord(record);
         session.commit();
 
         return Result.success();
