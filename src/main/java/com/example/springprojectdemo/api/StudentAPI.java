@@ -83,4 +83,11 @@ public class StudentAPI {
         return null;
     }
 
+    @PostMapping("postrecord")
+    public Result postRecord(@RequestBody AttendanceRecord record, HttpServletRequest request) {
+        String stu_id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
+
+        return studentService.postRecord(record, stu_id);
+    }
+
 }

@@ -19,4 +19,6 @@ public interface StudentService {
 
     Result<Student> getInfoById(String stu_id);
 
+    Result postRecord(AttendanceRecord record, String id);
+
 }

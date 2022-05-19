@@ -1,8 +1,11 @@
 package com.example.springprojectdemo.dataobject;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Data
+@NoArgsConstructor
 public class CourseAttendRecord {
 
     private String tea_id;
@@ -16,6 +19,8 @@ public class CourseAttendRecord {
     private int total;
 
     private int actual;
+
+//    public CourseAttendRecord() {}
 
     public CourseAttendRecord(
             String tea_id,

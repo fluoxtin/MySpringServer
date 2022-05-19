@@ -64,15 +64,18 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Result<AttendTask> getAttendTask(String stu_id) {
         StudentTask task = studentDao.getTask(stu_id);
-        String cour_id = studentDao.getCourIdFromCR(task.getAttend_id());
-        AttendTask attendTask = new AttendTask(
-                task.getAttend_id(),
-                cour_id,
-                task.getDeadline(),
-                new Location(task.getLatitude(), task.getLongitude())
-        );
-        studentDao.deleteTask(stu_id);
-        return Result.success(attendTask);
+        if (task != null) {
+            String cour_id = studentDao.getCourIdFromCR(task.getAttend_id());
+            AttendTask attendTask = new AttendTask(
+                    task.getAttend_id(),
+                    cour_id,
+                    task.getDeadline(),
+                    new Location(task.getLatitude(), task.getLongitude())
+            );
+            return Result.success(attendTask);
+        } else return Result.success();
+
+
     }
 
     @Override
@@ -80,6 +83,22 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentDao.getStudentById(stu_id);
         if (student != null) {
             return Result.success(student);
+        } else return Result.failed();
+    }
+
+    @Override
+    public Result postRecord(AttendanceRecord record, String id) {
+        int i = 0;
+        try {
+            i = studentDao.addRecord(record.getAttend_id(), id, record.getIsAttendance(), record.getSign_in_time());
+        } catch (Exception e) {
+            e.printStackTrace();
+            i = -1;
+        }
+        System.out.println(i);
+        if (i == 1) {
+            studentDao.deleteTask(id);
+            return Result.success();
         } else return Result.failed();
     }
 }

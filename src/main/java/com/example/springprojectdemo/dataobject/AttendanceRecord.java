@@ -8,8 +8,8 @@ public class AttendanceRecord {
 
     private String cour_name;
 
-    private String attendance;
+    private int isAttendance;
 
-    private String sign_in_time;
+    private long sign_in_time;
 
 }

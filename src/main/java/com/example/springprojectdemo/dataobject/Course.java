@@ -2,6 +2,7 @@ package com.example.springprojectdemo.dataobject;
 
 import lombok.Data;
 
+
 @Data
 public class Course {
 
@@ -11,6 +12,10 @@ public class Course {
 
     private String tea_name;
 
-    private String class_time;
+    private String start;
+
+    private String end;
+
+    private int week_day;
 
 }

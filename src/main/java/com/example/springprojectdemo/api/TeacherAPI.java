@@ -47,7 +47,7 @@ public class TeacherAPI {
     }
 
     @PostMapping("/posttask")
-    public Result postAttendanceTask(@RequestBody AttendTask task, HttpServletRequest request) {
+    public Result<AttendTask> postAttendanceTask(@RequestBody AttendTask task, HttpServletRequest request) {
         System.out.println("deadline : " + task.getDeadline());
         String tea_id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
 

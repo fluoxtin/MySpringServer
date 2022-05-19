@@ -27,12 +27,14 @@ public interface TeacherDao {
             "values (#{tea_id}, #{tea_name}, #{sex}, #{phone}, #{email}, #{unit})")
     int addTeacher(Teacher teacher);
 
-    @Select("select c.cour_id, c.cour_name, c.class_time, t.tea_name " +
+    @Select("select c.cour_id, c.cour_name, c.start, c.end, c.week_day, t.tea_name " +
             "from course c, teacher t where t.tea_id = #{id} and c.tea_id = #{id}")
     @Results({
             @Result(property = "cour_id", column = "cour_id"),
             @Result(property = "cour_name", column = "cour_name"),
-            @Result(property = "class_time", column = "class_time"),
+            @Result(property = "start", column = "start"),
+            @Result(property = "end", column = "end"),
+            @Result(property = "week_day", column = "week_day"),
             @Result(property = "tea_name", column = "tea_name")
     })
     List<Course> getCourses(String id);
@@ -44,15 +46,17 @@ public interface TeacherDao {
             "values (#{attend_id}, #{stu_id}, #{deadline}, #{latitude}, #{longitude})")
     boolean addTask(StudentTask task);
 
-    @Select("select ca.attend_id, ca.time, ca.actual_attendance, ca.total_student, c.cour_name" +
-            "from course_attendance ca, course c" +
-            "where ca.cour_id = c.cour_id and ca.tea_id = #{tea_id}")
+    @Select("select ca.attend_id, ca.time, ca.actual, ca.total, c.cour_name, ca.tea_id " +
+            " from course_attendance ca, course c " +
+            " where ca.cour_id = c.cour_id and ca.cour_id in " +
+            "(select cour_id from course_attendance where tea_id = #{tea_id})")
     @Results({
             @Result(property = "attend_id", column = "attend_id"),
-            @Result(property = "cour_name", column = "cour_name"),
             @Result(property = "time", column = "time"),
-            @Result(property = "total_student", column = "total_student"),
-            @Result(property = "actual_attendance", column = "actual_attendance")
+            @Result(property = "actual", column = "actual"),
+            @Result(property = "total", column = "total"),
+            @Result(property = "cour_name", column = "cour_name"),
+            @Result(property = "tea_id", column = "tea_id")
     })
     List<CourseAttendRecord> getCourseAttendRecord(String tea_id);
 

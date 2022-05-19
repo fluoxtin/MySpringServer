@@ -1,7 +1,6 @@
 package com.example.springprojectdemo.dao;
 
 import com.example.springprojectdemo.dataobject.*;
-import com.mysql.cj.protocol.x.XProtocolRow;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -27,27 +26,29 @@ public interface StudentDao {
     int addStudent(Student student);
 
     @Select({"select",
-            " c.cour_id, c.cour_name, c.class_time, t.tea_name ",
+            " c.cour_id, c.cour_name, c.start, c.end,c.week_day, t.tea_name ",
             "from course c, teacher t ",
             "where c.tea_id = t.tea_id and c.cour_id in ",
             "(select cour_id from student_course where stu_id = #{stu_id})"})
     @Results({
             @Result(property = "cour_id", column = "cour_id"),
             @Result(property = "cour_name", column = "cour_name"),
-            @Result(property = "class_time", column = "class_time"),
+            @Result(property = "start", column = "start"),
+            @Result(property = "end", column = "end"),
+            @Result(property = "week_day", column = "week_day"),
             @Result(property = "tea_name", column = "tea_name")
     })
     List<Course> getCourses(String stu_id);
 
-    @Select("select ca.attend_id, c.cour_name, sa.attendance,t.tea_name, sa.sign_in_time\n" +
-            "from student_attend sa, course_attendance ca, course c, teacher t where c.cour_id = ca.cour_id and attend_id\n" +
-            " in (select attend_id from course_attendance where stu_id = #{stu_id}')")
+    @Select("select ca.attend_id, c.cour_name, sa.attendance, sa.sign_in_time " +
+            "from student_attend sa, course_attendance ca, course c " +
+            "where c.cour_id = ca.cour_id and ca.attend_id = sa.atten_id and sa.atten_id " +
+            " in (select attend_id from student_attend where stu_id = #{stu_id})")
     @Results({
             @Result(property = "attend_id", column = "attend_id"),
             @Result(property = "cour_name", column = "cour_name"),
-            @Result(property = "attendance", column = "attendance"),
-            @Result(property = "sign_in_time", column = "sign_in_time"),
-            @Result(property = "tea_name", column = "tea_name"),
+            @Result(property = "isAttendance", column = "attendance"),
+            @Result(property = "sign_in_time", column = "sign_in_time")
     })
     List<AttendanceRecord> getAttendanceRecord(String stu_id);
 
@@ -59,5 +60,10 @@ public interface StudentDao {
 
     @Select("select cour_id from course_attendance where attend_id = #{attend_id}")
     String getCourIdFromCR(String attend_id);
+
+    @Insert("insert into student_attend (atten_id, stu_id, attendance, sign_in_time) " +
+            "values (#{atten_id}, #{stu_id}, #{attendance}, #{sign_in_time})")
+    int addRecord(@Param("atten_id")String atten_id, @Param("stu_id")String stu_id,
+                  @Param("attendance")int isAttend, @Param("sign_in_time")long time);
 
 }

@@ -27,6 +27,8 @@ public class TeacherServiceImpl implements TeacherService {
     @Resource
     SqlSessionFactory sqlSessionFactory;
 
+
+
     @Override
     public Result<Teacher> loginOrRegisterForT(User user) {
         Result<Teacher> result = new Result<>();
@@ -72,7 +74,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Result postTask(AttendTask task, String tea_id) {
+    public Result<AttendTask> postTask(AttendTask task, String tea_id) {
 
         SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH);
         TeacherDao td = session.getMapper(TeacherDao.class);
