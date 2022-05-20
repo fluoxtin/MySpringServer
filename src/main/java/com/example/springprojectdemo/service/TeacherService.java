@@ -19,4 +19,8 @@ public interface TeacherService {
     Result<AttendTask> postTask(AttendTask task, String id);
 
     Result<Teacher> getTeacherById(String tea_id);
+
+    Result<List<StudentRecord>> getAllRecords(String attend_id);
+
+    Result<AttendTask> getCurTask(String tea_id);
 }

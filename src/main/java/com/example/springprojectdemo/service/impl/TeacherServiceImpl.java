@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class TeacherServiceImpl implements TeacherService {
@@ -27,7 +30,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Resource
     SqlSessionFactory sqlSessionFactory;
 
-
+    ScheduledExecutorService service = Executors.newScheduledThreadPool(10);
 
     @Override
     public Result<Teacher> loginOrRegisterForT(User user) {
@@ -88,19 +91,49 @@ public class TeacherServiceImpl implements TeacherService {
                     task.getLocation().getLatitude(),
                     task.getLocation().getLongitude()
             );
-//            td.addTask(task, id);
             td.addTask(studentTask);
         }
+
+        if (td.getTaskById(tea_id) != null)
+            td.deleteTaskById(tea_id);
+
+        td.addCurrentTask(
+                task.getAttend_id(),
+                tea_id,
+                task.getDeadline(),
+                td.getCourseNameById(task.getCour_id())
+        );
+
         CourseAttendRecord record = new CourseAttendRecord(
                 tea_id,
                 task.getAttend_id(),
                 task.getCour_id(),
-                task.getDeadline() - (8 * 60 * 1000),
+                task.getDeadline() - (5 * 60 * 1000),
                 stuIds.size(),
                 0
         );
         td.addCourseRecord(record);
         session.commit();
+
+        // 执行定时任务查找过期的任务
+        service.schedule(() -> {
+                    System.out.println( "current thread" + Thread.currentThread().getName());
+                    System.out.println("执行定时任务查找过期的任务");
+            SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+            TeacherDao dao = sqlSession.getMapper(TeacherDao.class);
+            long now = System.currentTimeMillis();
+            List<StudentTask> overdueTasks = dao.getOverdueTask(now);
+            dao.deleteAttendTask(now);
+            dao.deleteOverdueTask(now);
+            for (StudentTask overdueTask : overdueTasks) {
+                dao.addRecord(overdueTask.getAttend_id(), overdueTask.getStu_id(), 0, now);
+            }
+            sqlSession.commit();
+        },
+        task.getDeadline() - System.currentTimeMillis(),
+             TimeUnit.MILLISECONDS
+        );
+
 
         return Result.success();
     }
@@ -108,5 +141,26 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Result<Teacher> getTeacherById(String tea_id) {
         return Result.success(teacherDao.getTeacherById(tea_id));
+    }
+
+    @Override
+    public Result<List<StudentRecord>> getAllRecords(String attend_id) {
+
+        return Result.success(teacherDao.getAllStudentRecords(attend_id));
+    }
+
+    @Override
+    public Result<AttendTask> getCurTask(String tea_id) {
+        TeacherTask task = teacherDao.getTaskById(tea_id);
+
+        if (task != null) {
+            AttendTask attendTask = new AttendTask(
+                    task.getAttend_id(),
+                    task.getCourse_name(),
+                    task.getDeadline()
+            );
+            return Result.success(attendTask);
+        }
+        else return Result.failed();
     }
 }

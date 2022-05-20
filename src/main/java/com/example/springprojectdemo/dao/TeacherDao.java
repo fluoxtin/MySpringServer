@@ -64,4 +64,55 @@ public interface TeacherDao {
             "values (#{attend_id}, #{cour_name}, #{tea_id}, #{total}, #{actual}, #{time})")
     int addCourseRecord(CourseAttendRecord record);
 
+    @Select("select sa.atten_id, sa.stu_id, sa.attendance, sa.sign_in_time, s.name " +
+            "from student_attend sa, student s " +
+            "where sa.stu_id = s.stu_id and sa.atten_id = #{attend_id}")
+    @Results({
+            @Result(property = "atten_id", column = "atten_id"),
+            @Result(property = "stu_id", column = "stu_id"),
+            @Result(property = "attendance", column = "attendance"),
+            @Result(property = "sign_in_time", column = "sign_in_time"),
+            @Result(property = "stu_name", column = "name"),
+
+    })
+    List<StudentRecord> getAllStudentRecords(String attend_id);
+
+    @Select("select * from attend_task where deadline =< #{cur_time}")
+    List<StudentTask> getOverdueTask(long cur_time);
+
+    @Delete("delete from attend_task where deadline =< #{cur_time}")
+    int deleteAttendTask(long cur_time);
+
+    @Insert("insert into student_attend (atten_id, stu_id, attendance, sign_in_time) " +
+            "values (#{atten_id}, #{stu_id}, #{attendance}, #{sign_in_time})")
+    int addRecord(@Param("atten_id")String atten_id, @Param("stu_id")String stu_id,
+                  @Param("attendance")int isAttend, @Param("sign_in_time")long time);
+
+    @Insert("insert into teacher_task (attend_id, tea_id, deadline, course_name) " +
+            "values (#{attend_id}, #{tea_id}, #{deadline}, #{course_name})")
+    int addCurrentTask(
+            @Param("attend_id")String attend_id,
+            @Param("tea_id")String tea_id,
+            @Param("deadline")long deadline,
+            @Param("course_name")String course_name
+    );
+
+    @Delete("delete from teacher_task where deadline =< #{deadline}")
+    int deleteOverdueTask(long deadline);
+
+    @Delete("delete from teacher_task where tea_id = #{id}")
+    void deleteTaskById(String id);
+
+    @Select("select cour_name from course where cour_id = #{id}")
+    String getCourseNameById(String id);
+
+    @Select("select * from teacher_task where tea_id = #{id}")
+    @Results({
+            @Result(property = "attend_id", column = "attend_id"),
+            @Result(property = "tea_id", column = "tea_id"),
+            @Result(property = "deadline", column = "deadline"),
+            @Result(property = "course_name", column = "course_name"),
+    })
+    TeacherTask getTaskById(String id);
+
 }

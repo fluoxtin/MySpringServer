@@ -95,7 +95,7 @@ public class StudentServiceImpl implements StudentService {
             e.printStackTrace();
             i = -1;
         }
-        System.out.println(i);
+        studentDao.updateCourseRecord(record.getAttend_id());
         if (i == 1) {
             studentDao.deleteTask(id);
             return Result.success();

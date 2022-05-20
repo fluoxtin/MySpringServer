@@ -66,4 +66,7 @@ public interface StudentDao {
     int addRecord(@Param("atten_id")String atten_id, @Param("stu_id")String stu_id,
                   @Param("attendance")int isAttend, @Param("sign_in_time")long time);
 
+
+    @Update("update course_attendance set actual = actual + 1 where attend_id = #{attend_id}")
+    int updateCourseRecord(String attend_id);
 }

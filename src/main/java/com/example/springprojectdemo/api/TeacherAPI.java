@@ -66,4 +66,15 @@ public class TeacherAPI {
         return teacherService.getRecord(tea_id);
     }
 
+    @PostMapping("/getallrecords")
+    public Result<List<StudentRecord>> getAllRecord(@RequestBody CourseAttendRecord record) {
+        return teacherService.getAllRecords(record.getAttend_id());
+    }
+
+    @PostMapping("getcurtask")
+    public Result<AttendTask> getCurTask(HttpServletRequest request) {
+        String tea_id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
+        return teacherService.getCurTask(tea_id);
+    }
+
 }
