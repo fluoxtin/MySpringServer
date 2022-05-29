@@ -25,4 +25,6 @@ public interface UserService {
 
     Result<User> getUserById(String id);
 
+    Result<User> deleteById(String id);
+
 }

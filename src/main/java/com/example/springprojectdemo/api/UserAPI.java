@@ -84,9 +84,13 @@ public class UserAPI {
         String token = request.getHeader("token");
         String id = TokenUtils.getUsernameFromToken(token);
 
-
         return userService.getUserById(id);
     }
 
+    @PostMapping("/delete")
+    public Result<User> delete(HttpServletRequest request) {
+        String id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
+        return userService.deleteById(id);
+    }
 }
 

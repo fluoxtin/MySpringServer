@@ -77,10 +77,10 @@ public interface TeacherDao {
     })
     List<StudentRecord> getAllStudentRecords(String attend_id);
 
-    @Select("select * from attend_task where deadline =< #{cur_time}")
+    @Select("select * from attend_task where deadline <= #{cur_time}")
     List<StudentTask> getOverdueTask(long cur_time);
 
-    @Delete("delete from attend_task where deadline =< #{cur_time}")
+    @Delete("delete from attend_task where deadline <= #{cur_time}")
     int deleteAttendTask(long cur_time);
 
     @Insert("insert into student_attend (atten_id, stu_id, attendance, sign_in_time) " +
@@ -97,7 +97,7 @@ public interface TeacherDao {
             @Param("course_name")String course_name
     );
 
-    @Delete("delete from teacher_task where deadline =< #{deadline}")
+    @Delete("delete from teacher_task where deadline <= #{deadline}")
     int deleteOverdueTask(long deadline);
 
     @Delete("delete from teacher_task where tea_id = #{id}")
@@ -114,5 +114,8 @@ public interface TeacherDao {
             @Result(property = "course_name", column = "course_name"),
     })
     TeacherTask getTaskById(String id);
+
+    @Select("select * from student_leave where stu_id = #{id} and start >= #{now} and end <= #{now}")
+    boolean getIdIfLeave(String id, long now);
 
 }

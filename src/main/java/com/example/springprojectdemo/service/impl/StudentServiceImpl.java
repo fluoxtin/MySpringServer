@@ -101,4 +101,34 @@ public class StudentServiceImpl implements StudentService {
             return Result.success();
         } else return Result.failed();
     }
+
+    @Override
+    public Result<Student> updateFaceUrl(String stu_id, String url) {
+        int i;
+        try {
+            i = studentDao.updateFaceUrl(url, stu_id);
+        } catch (Exception e) {
+            i = -1;
+            e.printStackTrace();
+        }
+        if (i == 1) {
+            return Result.success(studentDao.getStudentById(stu_id));
+        } else {
+            return Result.failed();
+        }
+    }
+
+    @Override
+    public Result addLeave(StudentLeave leave) {
+        int i;
+        try {
+            i = studentDao.addLeave(leave);
+        } catch (Exception e) {
+            i = -1;
+            e.printStackTrace();
+        }
+        if (i == 1)
+            return Result.success();
+        else return Result.failed();
+    }
 }

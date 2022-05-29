@@ -111,5 +111,19 @@ public class UserServiceImpl implements UserService {
         return Result.success(user);
     }
 
+    @Override
+    public Result<User> deleteById(String id) {
+        int i ;
+        try {
+            i = userDao.deleteByUsername(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            i = -1;
+        }
+        if (i == 1)
+            return Result.success();
+        else
+            return Result.failed();
+    }
 
 }

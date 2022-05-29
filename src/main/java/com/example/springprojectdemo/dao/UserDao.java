@@ -24,4 +24,7 @@ public interface UserDao {
     })
     User getByUserName(String username);
 
+    @Delete("delete from user where username = #{username}")
+    int deleteByUsername(String username);
+
 }

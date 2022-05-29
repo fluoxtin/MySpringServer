@@ -21,4 +21,8 @@ public interface StudentService {
 
     Result postRecord(AttendanceRecord record, String id);
 
+    Result<Student> updateFaceUrl(String stu_id, String url);
+
+    Result addLeave(StudentLeave leave);
+
 }

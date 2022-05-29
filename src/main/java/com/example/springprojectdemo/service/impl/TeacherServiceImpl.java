@@ -122,11 +122,21 @@ public class TeacherServiceImpl implements TeacherService {
             SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
             TeacherDao dao = sqlSession.getMapper(TeacherDao.class);
             long now = System.currentTimeMillis();
+                    System.out.println("now : " + now);
             List<StudentTask> overdueTasks = dao.getOverdueTask(now);
+            System.out.println("overdueTask size : " + overdueTasks.size());
             dao.deleteAttendTask(now);
             dao.deleteOverdueTask(now);
             for (StudentTask overdueTask : overdueTasks) {
-                dao.addRecord(overdueTask.getAttend_id(), overdueTask.getStu_id(), 0, now);
+                boolean isLeave;
+                try {
+                    isLeave = dao.getIdIfLeave(overdueTask.getStu_id(), now);
+                }catch (Exception e) {
+                    isLeave = false;
+                }
+                if (isLeave)
+                    dao.addRecord(overdueTask.getAttend_id(), overdueTask.getStu_id(), 2, now);
+                else dao.addRecord(overdueTask.getAttend_id(), overdueTask.getStu_id(), 0, now);
             }
             sqlSession.commit();
         },

@@ -27,6 +27,8 @@ public class Student implements Serializable {
 
     private String major;
 
+    private String face_url;
+
     @Override
     public String toString() {
         return "Student{" +

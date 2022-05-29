@@ -17,7 +17,8 @@ public interface StudentDao {
             @Result(property = "email", column = "email"),
             @Result(property = "unit", column = "unit"),
             @Result(property = "stu_class", column = "stu_class"),
-            @Result(property = "major", column = "major")
+            @Result(property = "major", column = "major"),
+            @Result(property = "face_url", column = "face_url")
     })
     Student getStudentById(String stu_id);
 
@@ -40,9 +41,9 @@ public interface StudentDao {
     })
     List<Course> getCourses(String stu_id);
 
-    @Select("select ca.attend_id, c.cour_name, sa.attendance, sa.sign_in_time " +
+    @Select("select sa.atten_id, c.cour_name, sa.attendance, sa.sign_in_time " +
             "from student_attend sa, course_attendance ca, course c " +
-            "where c.cour_id = ca.cour_id and ca.attend_id = sa.atten_id and sa.atten_id " +
+            "where c.cour_id = ca.cour_id and ca.attend_id = sa.atten_id and sa.stu_id = #{stu_id} and sa.atten_id " +
             " in (select attend_id from student_attend where stu_id = #{stu_id})")
     @Results({
             @Result(property = "attend_id", column = "attend_id"),
@@ -69,4 +70,12 @@ public interface StudentDao {
 
     @Update("update course_attendance set actual = actual + 1 where attend_id = #{attend_id}")
     int updateCourseRecord(String attend_id);
+
+    @Update("update student set face_url = #{face_url} where stu_id = #{id}")
+    int updateFaceUrl(@Param("face_url") String face_url, @Param("id") String id);
+
+    @Insert("insert into student_leave (stu_id, start, end, msg) " +
+            "values (#{stu_id}, #{start}, #{end}, #{msg})")
+    int addLeave(StudentLeave leave);
+
 }

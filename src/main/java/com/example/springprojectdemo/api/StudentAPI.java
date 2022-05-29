@@ -76,11 +76,10 @@ public class StudentAPI {
         else System.out.println("id == null");
         return studentService.getInfoById(stu_id);
     }
-    
-    public Result postLeaveRequest(HttpServletRequest request) {
-        String stu_id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
-        // TODO: 2022/5/17  
-        return null;
+
+    @PostMapping("leaverequest")
+    public Result postLeaveRequest(@RequestBody StudentLeave leave) {
+        return studentService.addLeave(leave);
     }
 
     @PostMapping("postrecord")
@@ -88,6 +87,11 @@ public class StudentAPI {
         String stu_id = TokenUtils.getUsernameFromToken(request.getHeader("token"));
 
         return studentService.postRecord(record, stu_id);
+    }
+
+    @PostMapping("/updatefaceurl")
+    public Result<Student> updateFaceUrl(@RequestBody Student student) {
+        return studentService.updateFaceUrl(student.getStu_id(), student.getFace_url());
     }
 
 }
